@@ -2,6 +2,11 @@
 
 Collection of MCP servers used for homelab operations and tooling workflows.
 
+## Path Placeholders
+
+- `<MCP_STUFF_ROOT>`: local checkout root for the parent repo (example: `/Volumes/Data/_ai/_mcp/mcp_stuff`)
+- `<MCP_DATA_ROOT>`: persistent runtime data root (example: `/Volumes/Data/_ai/mcp-data`)
+
 ## Available Servers
 
 - `network-mcp-server/` - network and connectivity operations
@@ -15,13 +20,13 @@ Collection of MCP servers used for homelab operations and tooling workflows.
 
 1. Install top-level Node dependencies (for Node-based servers):
 ```bash
-cd /Volumes/Data/_ai/_mcp/mcp_stuff/mcp-servers/mcp-servers
+cd <MCP_STUFF_ROOT>/mcp-servers/mcp-servers
 npm install
 ```
 
 2. For Proxmox MCP (Python), bootstrap its local venv:
 ```bash
-cd /Volumes/Data/_ai/_mcp/mcp_stuff/proxmox-mcp-server
+cd <MCP_STUFF_ROOT>/proxmox-mcp-server
 ./bootstrap.sh
 cp .env.example .env
 # then set PROXMOX_HOST / PROXMOX_USER / PROXMOX_TOKEN
@@ -29,7 +34,7 @@ cp .env.example .env
 
 3. Start Proxmox MCP via wrapper (used by Codex config):
 ```bash
-cd /Volumes/Data/_ai/_mcp/mcp_stuff/mcp-servers
+cd <MCP_STUFF_ROOT>/mcp-servers
 ./wrappers/proxmox.sh
 ```
 
@@ -40,14 +45,14 @@ cd /Volumes/Data/_ai/_mcp/mcp_stuff/mcp-servers
 ```toml
 [mcp_servers.proxmox]
 command = "bash"
-args = ["/Volumes/Data/_ai/_mcp/mcp_stuff/mcp-servers/wrappers/proxmox.sh"]
+args = ["<MCP_STUFF_ROOT>/mcp-servers/wrappers/proxmox.sh"]
 ```
 
 ### Claude (`~/.claude.json`)
 
 The current setup uses a direct Python entrypoint to the same Proxmox MCP code/config:
 
-- command: `/Volumes/Data/_ai/_mcp/mcp_stuff/proxmox-mcp-server/venv/bin/python`
+- command: `<MCP_STUFF_ROOT>/proxmox-mcp-server/venv/bin/python`
 - args include:
   - `.../proxmox-mcp-server/run_server.py`
   - `run`
