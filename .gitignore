@@ -109,6 +109,8 @@ bower_components
 
 # Python
 .venv/
+venv/
+**/venv/
 __pycache__/
 
 # IDE files

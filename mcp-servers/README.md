@@ -1,52 +1,60 @@
 # MCP Servers Collection
 
-A comprehensive collection of Model Context Protocol (MCP) servers for homelab automation and management.
+Collection of MCP servers used for homelab operations and tooling workflows.
 
-## Available MCP Servers
+## Available Servers
 
-### Core Infrastructure
-- **network-mcp-server/** - Network device and connectivity management
-- **proxmox-mcp-server/** - Proxmox virtualization platform integration
-- **truenas-mcp-server/** - TrueNAS storage system management
+- `network-mcp-server/` - network and connectivity operations
+- `proxmox-mcp-server/` - Proxmox VE infrastructure management
+- `truenas-mcp-server/` - TrueNAS operations
+- `wikijs-mcp-server/` - Wiki.js integration
+- `code-linter-mcp-server/` - code linting and quality checks
+- `directory-polling-server/` - filesystem polling and change detection
 
-### Home Automation
-- **home-assistant-mcp-server/** - Home Assistant integration and control
+## Quick Setup
 
-### Development & Documentation
-- **github-mcp-server/** - GitHub repository and project management
-- **code-linter-mcp-server/** - Code linting and quality analysis
-- **wikijs-mcp-server/** - WikiJS documentation system integration
-- **claude-auto-commit-mcp-server/** - Automated commit generation and review
+1. Install top-level Node dependencies (for Node-based servers):
+```bash
+cd /Volumes/Data/_ai/_mcp/mcp_stuff/mcp-servers/mcp-servers
+npm install
+```
 
-### Utilities
-- **directory-polling-server/** - File system monitoring and change detection
+2. For Proxmox MCP (Python), bootstrap its local venv:
+```bash
+cd /Volumes/Data/_ai/_mcp/mcp_stuff/proxmox-mcp-server
+./bootstrap.sh
+cp .env.example .env
+# then set PROXMOX_HOST / PROXMOX_USER / PROXMOX_TOKEN
+```
 
-## Installation
+3. Start Proxmox MCP via wrapper (used by Codex config):
+```bash
+cd /Volumes/Data/_ai/_mcp/mcp_stuff/mcp-servers
+./wrappers/proxmox.sh
+```
 
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
+## Client Integration
 
-2. Configure individual MCP servers:
-   ```bash
-   cd <server-directory>
-   # Follow individual server setup instructions
-   ```
+### Codex (`~/.codex/config.toml`)
 
-3. Use wrapper scripts for easy management:
-   ```bash
-   ./setup-mcp-servers.sh
-   ```
+```toml
+[mcp_servers.proxmox]
+command = "bash"
+args = ["/Volumes/Data/_ai/_mcp/mcp_stuff/mcp-servers/wrappers/proxmox.sh"]
+```
 
-## Usage
+### Claude (`~/.claude.json`)
 
-Each MCP server can be configured in Claude Desktop by adding them to your MCP configuration file. See individual server documentation for specific setup instructions.
+The current setup uses a direct Python entrypoint to the same Proxmox MCP code/config:
 
-## Contributing
+- command: `/Volumes/Data/_ai/_mcp/mcp_stuff/proxmox-mcp-server/venv/bin/python`
+- args include:
+  - `.../proxmox-mcp-server/run_server.py`
+  - `run`
+  - `.../proxmox-mcp-server/proxmox_mcp_config.json`
 
-Please see individual server directories for their specific contribution guidelines and requirements.
+## Notes
 
-## License
-
-MIT License - see individual server directories for specific licensing information.
+- Prefer API token auth for Proxmox (`PROXMOX_TOKEN`) over password auth.
+- `proxmox-mcp-server/` currently has a large local change set in `venv/`; avoid committing virtualenv artifacts to keep diffs and reviews manageable.
+- See `proxmox-mcp-server/README.md` for full Proxmox capabilities, safety controls, and maintenance/audit tooling.
