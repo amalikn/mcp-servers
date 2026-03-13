@@ -5,7 +5,7 @@ Collection of MCP servers used for homelab operations and tooling workflows.
 ## Path Placeholders
 
 - `<MCP_STUFF_ROOT>`: local checkout root for the parent repo (example: `/Volumes/Data/_ai/_mcp/mcp_stuff`)
-- `<MCP_DATA_ROOT>`: persistent runtime data root (example: `/Volumes/Data/_ai/mcp-data`)
+- `<MCP_DATA_ROOT>`: persistent runtime data root (example: `/Volumes/Data/_ai/_mcp/mcp-data`)
 
 ## Available Servers
 
